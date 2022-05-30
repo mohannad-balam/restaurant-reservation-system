@@ -21,44 +21,23 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Screenshots : 
+![Screenshot 2022-05-29 140233](https://user-images.githubusercontent.com/73895704/171038315-35892c41-0530-4b7b-84b5-afb5c8784550.png)
+![Screenshot 2022-05-29 140256](https://user-images.githubusercontent.com/73895704/171038347-db16064d-3a0e-4cb5-a0d1-5769af39a490.png)
+![Screenshot 2022-05-29 140314](https://user-images.githubusercontent.com/73895704/171038358-a83275e5-4556-4dc6-adb8-e1406546b1c3.png)
+![Screenshot 2022-05-29 140339](https://user-images.githubusercontent.com/73895704/171038364-9900cfa2-790f-4b5b-9b5f-478402279f5b.png)
+![Uploading Screenshot 2022-05-29 140357.png…]()
+![U![Screenshot 2022-05-29 140443](https://user-images.githubusercontent.com/73895704/171038407-2fe9ec6d-10ff-4887-9e20-102a9f9a6725.png)
+ploading Screenshot 2022-05-29 140424.png…]()
+![![Screenshot 2022-05-29 140456](https://user-images.githubusercontent.com/73895704/171038414-9e7c010f-dac3-4d0d-aedd-c3e6a565c1fe.png)
+Uploading Screenshot 2022-05-29 140443.png…]()
+![Screenshot 2022-05-29 140551](https://user-images.githubusercontent.com/73895704/171038424-3fd4d3de-ad2c-462d-82d7-5207bb9c643d.png)
+![Screenshot 2022-05-29 140640](https://user-images.githubusercontent.com/73895704/171038432-172229dc-7ddc-49e8-872d-723c8557dc29.png)
+![Screenshot 2022-05-29 140701](https://user-images.githubusercontent.com/73895704/171038439-db9507ec-86e0-4f1d-ab5f-8181fe9548fd.png)
+![Screenshot 2022-05-29 140731](https://user-images.githubusercontent.com/73895704/171038447-162a0ed5-c20f-4f53-bf1f-b8338fde5fe7.png)
+![Screenshot 2022-05-29 140801](https://user-images.githubusercontent.com/73895704/171038453-e8718ca3-82b7-40dd-85ce-40a00e3b84c1.png)
+![Screenshot 2022-05-29 140838](https://user-images.githubusercontent.com/73895704/171038458-a41fcb2b-b91a-4764-92ba-064674d54744.png)
+![Screenshot 2022-05-29 140851](https://user-images.githubusercontent.com/73895704/171038466-671ec197-98c7-45a0-a307-c07a885814f2.png)
+![Screenshot 2022-05-29 140901](https://user-images.githubusercontent.com/73895704/171038469-87c6d48c-6ed1-46ae-b707-99686710169a.png)
+![Screenshot 2022-05-29 140918](https://user-images.githubusercontent.com/73895704/171038475-2899d28a-1cb5-4dfa-b8c4-3810d1b31562.png)
+![Screenshot 2022-05-29 140933](https://user-images.githubusercontent.com/73895704/171038476-93049c11-a385-4867-b5a2-8f54d87b7a98.png)
