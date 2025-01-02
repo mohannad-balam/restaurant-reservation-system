@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ReservationController as ReservationControllerApi;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,11 +17,20 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('/user-login', [AuthController::class, 'login']);
+Route::post('/user-register', [AuthController::class, 'register']);
 
-Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/menus', [MenuController::class, 'index']);
-Route::post('/init-reservation', [ReservationControllerApi::class, 'storeFirst']);
-Route::put('/confirm-reservation/{id}', [ReservationControllerApi::class, 'storeStepTwo']);
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::get('/menus', [MenuController::class, 'index']);
+    Route::post('/create-reservation', [ReservationControllerApi::class, 'createReservation']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});
+
+
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
