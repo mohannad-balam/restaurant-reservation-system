@@ -87,8 +87,9 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ReservationStoreRequest $request, Reservation $reservation)
+    public function update(ReservationStoreRequest $request, $id)
     {
+        $reservation = Reservation::findOrFail($id);
         $table = Table::findOrFail($request->table_id);
         if($request->guest_number > $table->guest_number){
             return back()->with('warning', 'Please Choose The Table Based On The Guest Number!');

@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [WelcomeController::class, 'index']);
+Route::get('/home', [WelcomeController::class, 'index']);
 
 /*
 FRONTEND ROUTES
