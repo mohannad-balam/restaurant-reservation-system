@@ -52,9 +52,9 @@ class ReservationController extends Controller
                     }
                 }
 
-                return response()->json($reservation);
+                return response()->json("reservation created successfully",201);
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json($e,400);
         }
     }
 

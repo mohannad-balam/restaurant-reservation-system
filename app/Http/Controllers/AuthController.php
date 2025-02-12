@@ -27,7 +27,7 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken($reqeust->email)->plainTextToken;
-        return response()->json(["token" => $token],200);
+        return response()->json(["accessToken" => $token],201);
         }catch(Exception $e){
             return response()->json($e->getMessage(), 401);
         }
@@ -59,7 +59,7 @@ class AuthController extends Controller
         if(!$user)
             return response()->json(["error" => "Error creating user"], 401);
         else
-            return response()->json(["user" => $user], 201);
+            return response()->json($user, 201);
         }catch(Exception $e){
             return response()->json($e,401);
         }

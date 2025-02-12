@@ -38,12 +38,18 @@ class CategoryController extends Controller
      */
     public function store(CategoryStoreRequest $request)
     {
+        // Store the file in the 'public' disk
+        $path = $request->file('image')->store('photos', 'public');
+
+        // Return the full URL of the uploaded image
+        $url = Storage::url($path);
+
         $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
         $request->image->move(public_path('categories'), $newImageName);
 
         Category::create([
             'name' => $request->name,
-            'image' => $newImageName,
+            'image' => asset($newImageName),
             'description' => $request->description,
         ]);
 

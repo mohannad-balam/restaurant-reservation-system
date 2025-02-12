@@ -17,4 +17,9 @@ class CategoryController extends Controller
             return response()->json($e);
         }
     }
+
+    public function show(Category $category){
+        $menus = $category->menus;
+        return response()->json($menus);
+    }
 }
