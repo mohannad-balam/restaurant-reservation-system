@@ -53,7 +53,8 @@ class CategoryController extends Controller
             'description' => $request->description,
         ]);
 
-        return to_route('admin.categories.index')->with('success', 'Category Created Successfully!');
+        return response('',201);
+        // return to_route('admin.categories.index')->with('success', 'Category Created Successfully!');
     }
 
     /**
@@ -107,7 +108,8 @@ class CategoryController extends Controller
             'image' => $newImageName,
         ]);
 
-        return to_route('admin.categories.index')->with('success', 'Category Updated Successfully!');
+        return response()->json('updated');
+        // return to_route('admin.categories.index')->with('success', 'Category Updated Successfully!');
     }
 
     /**
@@ -122,6 +124,7 @@ class CategoryController extends Controller
         $category->menus()->detach();
         $category->delete();
 
-        return to_route('admin.categories.index')->with('danger', 'Category Deleted Successfully!');
+        return response()->json('deleted');
+        // return to_route('admin.categories.index')->with('danger', 'Category Deleted Successfully!');
     }
 }

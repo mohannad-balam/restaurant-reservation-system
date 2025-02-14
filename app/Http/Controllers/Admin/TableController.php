@@ -17,7 +17,8 @@ class TableController extends Controller
     public function index()
     {
         $tables = Table::orderBy('updated_at', 'DESC')->get();
-        return view('admin.tables.index', compact('tables'));
+        return response()->json($tables);
+        // return view('admin.tables.index', compact('tables'));
     }
 
     /**
@@ -45,7 +46,8 @@ class TableController extends Controller
             'location' => $request->location,
         ]);
 
-        return to_route('admin.tables.index')->with('success', 'Table Added Successfully!');
+        return response()->json('',201);
+        // return to_route('admin.tables.index')->with('success', 'Table Added Successfully!');
     }
 
     /**
@@ -80,8 +82,8 @@ class TableController extends Controller
     public function update(TableStoreRequest $request, Table $table)
     {
         $table->update($request->validated());
-
-        return to_route('admin.tables.index')->with('success', 'Table Updated Successfully!');
+        return response()->json('updated');
+        // return to_route('admin.tables.index')->with('success', 'Table Updated Successfully!');
     }
 
     /**
@@ -95,6 +97,7 @@ class TableController extends Controller
         $table->delete();
         $table->reservations()->delete();
 
-        return to_route('admin.tables.index')->with('danger', 'Table Deleted Successfully!');
+        response()->json('deleted');
+        // return to_route('admin.tables.index')->with('danger', 'Table Deleted Successfully!');
     }
 }

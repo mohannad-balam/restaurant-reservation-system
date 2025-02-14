@@ -54,7 +54,8 @@ class ReservationController extends Controller
         }
         Reservation::create($request->validated());
 
-        return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Made Successfully!');
+        return response()->json('',201);
+        // return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Made Successfully!');
     }
 
     /**
@@ -104,7 +105,9 @@ class ReservationController extends Controller
         }
         $reservation->update($request->validated());
 
-        return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Updated Successfully!');
+        return response()->json('updated');
+
+        // return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Updated Successfully!');
     }
 
     /**
@@ -116,6 +119,7 @@ class ReservationController extends Controller
     public function destroy(Reservation $reservation)
     {
         $reservation->delete();
-        return to_route('admin.reservations.index')->with('danger', 'Reservation Has Been Deleted Successfully!');
+        return response()->json('deleted');
+        // return to_route('admin.reservations.index')->with('danger', 'Reservation Has Been Deleted Successfully!');
     }
 }

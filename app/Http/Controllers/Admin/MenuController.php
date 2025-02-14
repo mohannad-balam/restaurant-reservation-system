@@ -19,7 +19,8 @@ class MenuController extends Controller
     public function index()
     {
         $menus = Menu::orderBy('updated_at', 'DESC')->get();
-        return view('admin.menus.index', compact('menus'));
+        return response()->json($menus);
+        // return view('admin.menus.index', compact('menus'));
     }
 
     /**
@@ -55,7 +56,8 @@ class MenuController extends Controller
             $menu->categories()->attach($request->categories);
         }
 
-        return to_route('admin.menus.index')->with('success', 'Menu Created Successfully!');
+        return response()->json('',201);
+        // return to_route('admin.menus.index')->with('success', 'Menu Created Successfully!');
     }
 
     /**
@@ -114,7 +116,8 @@ class MenuController extends Controller
             $menu->categories()->sync($request->categories);
         }
 
-        return to_route('admin.menus.index')->with('success', 'Menu Updated Successfully!');
+        return response()->json('updated');
+        // return to_route('admin.menus.index')->with('success', 'Menu Updated Successfully!');
     }
 
     /**
@@ -128,6 +131,7 @@ class MenuController extends Controller
         //delete the relationship First
         $menu->categories()->detach();
         $menu->delete();
-        return to_route('admin.menus.index')->with('danger', 'Menu Deleted Successfully!');
+        return response()->json('deleted');
+        // return to_route('admin.menus.index')->with('danger', 'Menu Deleted Successfully!');
     }
 }
