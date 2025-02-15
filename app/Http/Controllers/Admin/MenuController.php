@@ -42,14 +42,15 @@ class MenuController extends Controller
      */
     public function store(MenuStoreRequest $request)
     {
-        $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
-        $request->image->move(public_path('menus'), $newImageName);
+        // $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+        // $request->image->move(public_path('menus'), $newImageName);
 
         $menu = Menu::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
-            'image' => $newImageName,
+            'image' => 'kjndce',
+            // 'image' => $newImageName,
         ]);
 
         if($request->has('categories')){
@@ -90,26 +91,28 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Menu $menu)
+    public function update(Request $request, $id)
     {
+        $menu = Menu::find($id);
         $request->validate([
            'name' => 'required',
            'price' => 'required',
            'description' => 'required'
         ]);
 
-        $newImageName = $menu->image;
-        if ($request->hasFile('image')) {
-            Storage::delete(public_path('menus/'.$newImageName));
-            $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
-            $request->image->move(public_path('menus'), $newImageName);
-        }
+        // $newImageName = $menu->image;
+        // if ($request->hasFile('image')) {
+        //     Storage::delete(public_path('menus/'.$newImageName));
+        //     $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+        //     $request->image->move(public_path('menus'), $newImageName);
+        // }
 
         $menu->update([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
-            'image' => $newImageName,
+            'image' => 'jdbnd',
+            // 'image' => $newImageName,
         ]);
 
         if($request->has('categories')){
@@ -126,8 +129,9 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Menu $menu)
+    public function destroy($id)
     {
+        $menu = Menu::find($id);
         //delete the relationship First
         $menu->categories()->detach();
         $menu->delete();
