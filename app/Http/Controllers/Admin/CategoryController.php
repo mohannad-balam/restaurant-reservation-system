@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::orderBy('updated_at', 'DESC')->get();
-        return view('admin.categories.index', compact('categories'));
+        return response()->json($categories);
     }
 
     /**
@@ -39,17 +39,18 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         // Store the file in the 'public' disk
-        $path = $request->file('image')->store('photos', 'public');
+        // $path = $request->file('image')->store('photos', 'public');
 
-        // Return the full URL of the uploaded image
-        $url = Storage::url($path);
+        // // Return the full URL of the uploaded image
+        // $url = Storage::url($path);
 
-        $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
-        $request->image->move(public_path('categories'), $newImageName);
+        // $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+        // $request->image->move(public_path('categories'), $newImageName);
 
         Category::create([
             'name' => $request->name,
-            'image' => asset($newImageName),
+            // 'image' => asset($newImageName),
+            'image' => 'dckc',
             'description' => $request->description,
         ]);
 
@@ -65,7 +66,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::find($id);
+        $menus = $category->menus;
+        return response()->json($menus);
     }
 
     /**
@@ -86,27 +89,28 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
+        $category = Category::find($id);
         $request->validate([
             'name' => ['required'],
             'description' => ['required'],
-            'image' => ['image','required']
+            // 'image' => ['image','required']
         ]);
-        $newImageName = $category->image;
-        if ($request->hasFile('image')) {
-            Storage::delete(public_path('categories/'.$newImageName));
-            $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
-            $request->image->move(public_path('categories'), $newImageName);
-        }
-        // $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
-        // $request->image->move(public_path('images'), $newImageName);
+        // $newImageName = $category->image;
+        // if ($request->hasFile('image')) {
+        //     Storage::delete(public_path('categories/'.$newImageName));
+        //     $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+        //     $request->image->move(public_path('categories'), $newImageName);
+        // }
 
         $category->update([
             'name' => $request->name,
             'description' => $request->description,
-            'image' => $newImageName,
+            'image' => $request->image,
+            // 'image' => $newImageName,
         ]);
+        $category->save();
 
         return response()->json('updated');
         // return to_route('admin.categories.index')->with('success', 'Category Updated Successfully!');
@@ -118,9 +122,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        Storage::delete(public_path('images/'.$category->image));
+        $category = Category::find($id);
+        // Storage::delete(public_path('images/'.$category->image));
         $category->menus()->detach();
         $category->delete();
 

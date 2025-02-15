@@ -79,8 +79,9 @@ class TableController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TableStoreRequest $request, Table $table)
+    public function update(TableStoreRequest $request, $id)
     {
+        $table = Table::find($id);
         $table->update($request->validated());
         return response()->json('updated');
         // return to_route('admin.tables.index')->with('success', 'Table Updated Successfully!');
@@ -92,8 +93,9 @@ class TableController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Table $table)
+    public function destroy($id)
     {
+        $table = Table::find($id);
         $table->delete();
         $table->reservations()->delete();
 

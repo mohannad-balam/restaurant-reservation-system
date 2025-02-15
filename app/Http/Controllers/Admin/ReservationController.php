@@ -8,6 +8,7 @@ use App\Http\Requests\ReservationStoreRequest;
 use App\Models\Reservation;
 use App\Models\Table;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
@@ -20,7 +21,7 @@ class ReservationController extends Controller
     public function index()
     {
         $reservations = Reservation::orderBy('updated_at', 'DESC')->get();
-        return view('admin.reservations.index', compact('reservations'));
+        return response()->json($reservations);
     }
 
     /**
@@ -90,8 +91,9 @@ class ReservationController extends Controller
      */
     public function update(ReservationStoreRequest $request, $id)
     {
-        $reservation = Reservation::findOrFail($id);
-        $table = Table::findOrFail($request->table_id);
+        try{
+            $reservation = Reservation::find($id);
+        $table = Table::find($request->table_id);
         if($request->guest_number > $table->guest_number){
             return back()->with('warning', 'Please Choose The Table Based On The Guest Number!');
         }
@@ -106,6 +108,9 @@ class ReservationController extends Controller
         $reservation->update($request->validated());
 
         return response()->json('updated');
+        }catch(Exception $e){
+            return response()->json($e);
+        }
 
         // return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Updated Successfully!');
     }
@@ -116,9 +121,11 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reservation $reservation)
+    public function destroy($id)
     {
+        $reservation = Reservation::find($id);
         $reservation->delete();
+        // $reservation->save();
         return response()->json('deleted');
         // return to_route('admin.reservations.index')->with('danger', 'Reservation Has Been Deleted Successfully!');
     }

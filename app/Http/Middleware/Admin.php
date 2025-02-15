@@ -17,9 +17,9 @@ class Admin
     public function handle(Request $request, Closure $next)
     {
         //check if the user is authenticated or if he is an admin first
-        if(!auth()->check() || !auth()->user()->is_admin){
-            abort(403);
+        if(auth()->user()->is_admin == 1){
+            return $next($request);
         }
-        return $next($request);
+
     }
 }
