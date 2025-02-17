@@ -20,8 +20,19 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservations = Reservation::orderBy('updated_at', 'DESC')->get();
-        return response()->json($reservations);
+        $reservations = Reservation::with('table')
+        ->orderBy('updated_at', 'DESC')
+        ->get();
+
+    $reservations = $reservations->map(function ($reservation) {
+        $reservationArray = $reservation->toArray();
+        $reservationArray['table'] = isset($reservationArray['table']['name'])
+            ? $reservationArray['table']['name']
+            : null;
+        return $reservationArray;
+    });
+
+    return response()->json($reservations);
     }
 
     /**
