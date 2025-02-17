@@ -68,4 +68,12 @@ class AuthController extends Controller
             return response()->json("user may already exists",401);
         }
     }
+
+    public function getUserInfo(Request $request){
+        try{
+            return $request->user();
+        }catch(Exception $e){
+            return response()->json('something went wrong', 400);
+        }
+    }
 }
