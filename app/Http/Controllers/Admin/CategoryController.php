@@ -143,17 +143,37 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        try{
-            $category = Category::find($id);
-        // Storage::delete(public_path('images/'.$category->image));
+{
+    try {
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json('Category not found', 404);
+        }
+
+        // Delete category image if needed
+        Storage::delete(public_path('images/' . $category->image));
+
+        // Get all menus associated with this category
+        $menus = $category->menus;
+
+        // Detach all menu relationships for this category
         $category->menus()->detach();
+
+        // For each menu, check if it is still attached to any categories.
+        // If not, delete it.
+        foreach ($menus as $menu) {
+            if ($menu->categories()->count() === 0) {
+                $menu->delete();
+            }
+        }
+
+        // Now delete the category itself
         $category->delete();
 
         return response()->json('deleted');
-        }catch(Exception $e){
-            return response()->json("something went wrong", 400);
-        }
-        // return to_route('admin.categories.index')->with('danger', 'Category Deleted Successfully!');
+    } catch (Exception $e) {
+        return response()->json("something went wrong", 400);
     }
+}
+
 }
