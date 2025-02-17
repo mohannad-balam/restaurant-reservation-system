@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/menus', [UserMenuController::class, 'index']);
     Route::get('/available-tables', [UserTableController::class, 'index']);
     Route::post('/create-reservation', [ReservationControllerApi::class, 'createReservation']);
+    Route::get('/get-user-reservations', [ReservationControllerApi::class, 'getUserReservation']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
