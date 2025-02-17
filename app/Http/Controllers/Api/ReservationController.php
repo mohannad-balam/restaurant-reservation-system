@@ -79,4 +79,16 @@ class ReservationController extends Controller
 
     }
 
+    public function destroy($id)
+    {
+        try{
+            $reservation = Reservation::find($id);
+        $reservation->delete();
+        // $reservation->save();
+        return response()->json('deleted');
+        }catch(Exception $e){
+            return response()->json("something went wrong",400);
+        }
+    }
+
 }

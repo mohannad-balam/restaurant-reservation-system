@@ -146,6 +146,5 @@ class ReservationController extends Controller
         }catch(Exception $e){
             return response()->json("something went wrong",400);
         }
-        // return to_route('admin.reservations.index')->with('danger', 'Reservation Has Been Deleted Successfully!');
     }
 }
