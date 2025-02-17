@@ -23,16 +23,6 @@ class TableController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('admin.tables.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -52,31 +42,7 @@ class TableController extends Controller
         }catch(Exception $e){
             return response()->json('something went wrong', 400);
         }
-        // return to_route('admin.tables.index')->with('success', 'Table Added Successfully!');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Table $table)
-    {
-        return view('admin.tables.edit', compact('table'));
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -93,7 +59,6 @@ class TableController extends Controller
         }catch(Exception $e){
             return response()->json('something went wrong', 400);
         }
-        // return to_route('admin.tables.index')->with('success', 'Table Updated Successfully!');
     }
 
     /**
@@ -113,6 +78,5 @@ class TableController extends Controller
         }catch(Exception $e){
             return response()->json('something went wrong', 400);
         }
-        // return to_route('admin.tables.index')->with('danger', 'Table Deleted Successfully!');
     }
 }

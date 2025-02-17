@@ -23,15 +23,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('admin.categories.create');
-    }
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -59,7 +50,6 @@ class CategoryController extends Controller
         }catch(Exception $e){
             return response()->json("something went wrong",400);
         }
-        // return to_route('admin.categories.index')->with('success', 'Category Created Successfully!');
     }
 
     /**
@@ -77,17 +67,6 @@ class CategoryController extends Controller
         }catch(Exception $e){
             return response()->json("something went wrong", 400);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -112,7 +91,6 @@ class CategoryController extends Controller
             $request->validate([
                 'name' => ['required'],
                 'description' => ['required'],
-                // 'image' => ['image','required']
             ]);
             $newImageName = $category->image;
             if ($request->hasFile('image')) {
@@ -124,7 +102,6 @@ class CategoryController extends Controller
             $category->update([
                 'name' => $request->name,
                 'description' => $request->description,
-                // 'image' => $request->image,
                 'image' => $newImageName,
             ]);
             $category->save();
@@ -133,7 +110,6 @@ class CategoryController extends Controller
         }catch(Exception $e){
             return response()->json("something went wrong",400);
         }
-        // return to_route('admin.categories.index')->with('success', 'Category Updated Successfully!');
     }
 
     /**

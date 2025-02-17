@@ -36,17 +36,6 @@ class ReservationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $tables = Table::where('status', TableStatus::Available)->get();
-        return view('admin.reservations.create', compact('tables'));
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -57,7 +46,7 @@ class ReservationController extends Controller
         try{
             $table = Table::findOrFail($request->table_id);
         if($request->guest_number > $table->guest_number){
-            return response()->json('Please Choose The Table Based On The Guest Number!',400);
+            return response()->json('Choose a Table Based On The Guest Number!',400);
         }
         $reserv_date = Carbon::parse($request->res_date);
         foreach($table->reservations as $reservation){
@@ -71,30 +60,6 @@ class ReservationController extends Controller
         }catch(Exception $e){
             return response()->json('something went wrong', 400);
         }
-        // return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Made Successfully!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reservation $reservation)
-    {
-        $tables = Table::where('status', TableStatus::Available)->get();
-        return view('admin.reservations.edit', compact('reservation', 'tables'));
     }
 
     /**
@@ -126,10 +91,7 @@ class ReservationController extends Controller
         }catch(Exception $e){
             return response()->json('someting went wrong', 400);
         }
-
-        // return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Updated Successfully!');
     }
-
     /**
      * Remove the specified resource from storage.
      *
