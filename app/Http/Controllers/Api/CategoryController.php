@@ -14,7 +14,7 @@ class CategoryController extends Controller
             $categories = Category::all();
             return response()->json($categories);
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json("something went wrong", 400);
         }
     }
 

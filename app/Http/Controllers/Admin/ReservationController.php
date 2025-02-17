@@ -43,19 +43,23 @@ class ReservationController extends Controller
      */
     public function store(ReservationStoreRequest $request)
     {
-        $table = Table::findOrFail($request->table_id);
+        try{
+            $table = Table::findOrFail($request->table_id);
         if($request->guest_number > $table->guest_number){
-            return back()->with('warning', 'Please Choose The Table Based On The Guest Number!');
+            return response()->json('Please Choose The Table Based On The Guest Number!',400);
         }
         $reserv_date = Carbon::parse($request->res_date);
         foreach($table->reservations as $reservation){
             if($reservation->res_date->format('Y-m-d') == $reserv_date->format('Y-m-d')){
-                return back()->with('warning', 'This Table Is Reserved For This Day!');
+                return response()->json('This Table Is Reserved For This Day!',400);
             }
         }
         Reservation::create($request->validated());
 
         return response()->json('',201);
+        }catch(Exception $e){
+            return response()->json('something went wrong', 400);
+        }
         // return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Made Successfully!');
     }
 
@@ -95,21 +99,21 @@ class ReservationController extends Controller
             $reservation = Reservation::find($id);
         $table = Table::find($request->table_id);
         if($request->guest_number > $table->guest_number){
-            return back()->with('warning', 'Please Choose The Table Based On The Guest Number!');
+            return response()->json('Please Choose The Table Based On The Guest Number!',400);
         }
         $reserv_date = Carbon::parse($request->res_date);
         //we loop through each reservation except the one we have recieved (we reserved) in the function
         $reservations = $table->reservations()->where('id', '!=', $reservation->id);
         foreach($reservations as $reservation){
             if($reservation->res_date->format('Y-m-d') == $reserv_date->format('Y-m-d')){
-                return back()->with('warning', 'This Table Is Reserved For This Day!');
+                return response()->json('This Table Is Reserved For This Day!',400);
             }
         }
         $reservation->update($request->validated());
 
         return response()->json('updated');
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json('someting went wrong', 400);
         }
 
         // return to_route('admin.reservations.index')->with('success', 'Reservation Has Been Updated Successfully!');
@@ -123,10 +127,14 @@ class ReservationController extends Controller
      */
     public function destroy($id)
     {
-        $reservation = Reservation::find($id);
+        try{
+            $reservation = Reservation::find($id);
         $reservation->delete();
         // $reservation->save();
         return response()->json('deleted');
+        }catch(Exception $e){
+            return response()->json("something went wrong",400);
+        }
         // return to_route('admin.reservations.index')->with('danger', 'Reservation Has Been Deleted Successfully!');
     }
 }

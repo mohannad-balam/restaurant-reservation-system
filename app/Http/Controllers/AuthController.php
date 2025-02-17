@@ -23,13 +23,13 @@ class AuthController extends Controller
 
         //check password
         if(!$user || ! Hash::check($reqeust->password, $user->password)){
-            return response()->json(["error" => "email or password may be incorrect"]);
+            return response()->json("email or password may be incorrect",400);
         }
 
         $token = $user->createToken($reqeust->email)->plainTextToken;
         return response()->json(["accessToken" => $token],201);
         }catch(Exception $e){
-            return response()->json($e->getMessage(), 401);
+            return response()->json("something went wrong", 400);
         }
     }
 
@@ -56,12 +56,16 @@ class AuthController extends Controller
             'type'=>'user',
             'password'=>Hash::make($request->password),
         ]);
-        if(!$user)
-            return response()->json(["error" => "Error creating user"], 401);
-        else
+
+        if($user){
             return response()->json($user, 201);
-        }catch(Exception $e){
-            return response()->json($e,401);
+        }
+        else{
+            return response()->json("Error creating a user", 400);
+        }
+        }
+        catch(Exception $e){
+            return response()->json("user may already exists",401);
         }
     }
 }

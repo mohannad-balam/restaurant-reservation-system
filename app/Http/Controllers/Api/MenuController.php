@@ -14,7 +14,7 @@ class MenuController extends Controller
             $menus = Menu::all();
             return response()->json($menus);
         }catch(Exception $e){
-            return response()->json($e);
+            return response()->json("something went wrong", 400);
         }
     }
 }

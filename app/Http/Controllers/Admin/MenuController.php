@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MenuStoreRequest;
 use App\Models\Category;
 use App\Models\Menu;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -42,15 +43,15 @@ class MenuController extends Controller
      */
     public function store(MenuStoreRequest $request)
     {
-        // $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
-        // $request->image->move(public_path('menus'), $newImageName);
+        try{
+            $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+        $request->image->move(public_path('menus'), $newImageName);
 
         $menu = Menu::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
-            'image' => 'kjndce',
-            // 'image' => $newImageName,
+            'image' => $newImageName,
         ]);
 
         if($request->has('categories')){
@@ -58,6 +59,9 @@ class MenuController extends Controller
         }
 
         return response()->json('',201);
+        }catch(Exception $e){
+            return response()->json('something went wrong',400);
+        }
         // return to_route('admin.menus.index')->with('success', 'Menu Created Successfully!');
     }
 
@@ -93,33 +97,42 @@ class MenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $menu = Menu::find($id);
-        $request->validate([
-           'name' => 'required',
-           'price' => 'required',
-           'description' => 'required'
-        ]);
+        try{
+            if ($request->isMethod('put') || $request->isMethod('patch')) {
+                $request->merge(['_method' => 'PUT']);
+            }
+            $menu = Menu::find($id);
+            if(!$menu){
+                return (response()->json('menu not found', 404));
+            }
+            $request->validate([
+               'name' => 'required',
+               'price' => 'required',
+               'description' => 'required'
+            ]);
+            $newImageName = $menu->image;
+            if ($request->hasFile('image')) {
+                Storage::delete(public_path('menus/'.$newImageName));
+                $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+                $request->image->move(public_path('menus'), $newImageName);
+            }
 
-        // $newImageName = $menu->image;
-        // if ($request->hasFile('image')) {
-        //     Storage::delete(public_path('menus/'.$newImageName));
-        //     $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
-        //     $request->image->move(public_path('menus'), $newImageName);
-        // }
+            $menu->update([
+                'name' => $request->name,
+                'price' => $request->price,
+                'description' => $request->description,
+                // 'image' => 'jdbnd',
+                'image' => $newImageName,
+            ]);
 
-        $menu->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-            'image' => 'jdbnd',
-            // 'image' => $newImageName,
-        ]);
+            if($request->has('categories')){
+                $menu->categories()->sync($request->categories);
+            }
 
-        if($request->has('categories')){
-            $menu->categories()->sync($request->categories);
+            return response()->json('updated');
+        }catch(Exception $e){
+            return response()->json("something went wrong",400);
         }
-
-        return response()->json('updated');
         // return to_route('admin.menus.index')->with('success', 'Menu Updated Successfully!');
     }
 
@@ -131,11 +144,15 @@ class MenuController extends Controller
      */
     public function destroy($id)
     {
-        $menu = Menu::find($id);
+        try{
+            $menu = Menu::find($id);
         //delete the relationship First
         $menu->categories()->detach();
         $menu->delete();
         return response()->json('deleted');
+        }catch(Exception $e){
+            return response()->json('something went wrong', 400);
+        }
         // return to_route('admin.menus.index')->with('danger', 'Menu Deleted Successfully!');
     }
 }

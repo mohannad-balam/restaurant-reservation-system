@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TableStoreRequest;
 use App\Models\Table;
+use Exception;
 use Illuminate\Http\Request;
 
 class TableController extends Controller
@@ -39,14 +40,18 @@ class TableController extends Controller
      */
     public function store(TableStoreRequest $request)
     {
-        Table::create([
-            'name' => $request->name,
-            'guest_number' =>  $request->guest_number,
-            'status' => $request->status,
-            'location' => $request->location,
-        ]);
+        try{
+            Table::create([
+                'name' => $request->name,
+                'guest_number' =>  $request->guest_number,
+                'status' => $request->status,
+                'location' => $request->location,
+            ]);
 
-        return response()->json('',201);
+            return response()->json('',201);
+        }catch(Exception $e){
+            return response()->json('something went wrong', 400);
+        }
         // return to_route('admin.tables.index')->with('success', 'Table Added Successfully!');
     }
 
@@ -81,9 +86,13 @@ class TableController extends Controller
      */
     public function update(TableStoreRequest $request, $id)
     {
-        $table = Table::find($id);
+        try{
+            $table = Table::find($id);
         $table->update($request->validated());
         return response()->json('updated');
+        }catch(Exception $e){
+            return response()->json('something went wrong', 400);
+        }
         // return to_route('admin.tables.index')->with('success', 'Table Updated Successfully!');
     }
 
@@ -95,11 +104,15 @@ class TableController extends Controller
      */
     public function destroy($id)
     {
-        $table = Table::find($id);
+        try{
+            $table = Table::find($id);
         $table->delete();
         $table->reservations()->delete();
 
         response()->json('deleted');
+        }catch(Exception $e){
+            return response()->json('something went wrong', 400);
+        }
         // return to_route('admin.tables.index')->with('danger', 'Table Deleted Successfully!');
     }
 }

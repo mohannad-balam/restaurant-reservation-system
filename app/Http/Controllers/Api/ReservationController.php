@@ -37,9 +37,12 @@ class ReservationController extends Controller
                 ->whereNotIn('id', $reserved_tables_ids)
                 ->get();
 
-                $table = Table::findOrFail($request->table_id);
+                $table = Table::find($request->table_id);
+                if(!$table){
+                    return response()->json('table not found',404);
+                }
                 if($request->guest_number > $table->guest_number){
-                    return response()->json(['warning' => 'Please Choose The Table Based On The Guest Number!']);
+                    return response()->json('Choose a Table Based On The Guest Number!',400);
                 }
                 $reserv_date = Carbon::parse($request->res_date);
                 //we loop through each reservation except the one we have recieved (we reserved) in the function
@@ -48,13 +51,13 @@ class ReservationController extends Controller
                 foreach($reservations as $res){
                     if($res->res_date->format('Y-m-d') == $reserv_date->format('Y-m-d')){
                         $reservation->delete();
-                        return response()->json(['warning' => 'This Table Is Reserved For This Day!']);
+                        return response()->json('This Table Is Reserved For This Day!',400);
                     }
                 }
 
                 return response()->json("reservation created successfully",201);
         }catch(Exception $e){
-            return response()->json($e,400);
+            return response()->json("something went wrong", 400);
         }
     }
 

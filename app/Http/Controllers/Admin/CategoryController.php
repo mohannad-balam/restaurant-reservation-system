@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Models\Category;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -38,7 +39,8 @@ class CategoryController extends Controller
      */
     public function store(CategoryStoreRequest $request)
     {
-        // Store the file in the 'public' disk
+        try{
+            // Store the file in the 'public' disk
         $path = $request->file('image')->store('photos', 'public');
 
         // Return the full URL of the uploaded image
@@ -50,11 +52,13 @@ class CategoryController extends Controller
         Category::create([
             'name' => $request->name,
             'image' => asset($newImageName),
-            // 'image' => 'dckc',
             'description' => $request->description,
         ]);
 
         return response('',201);
+        }catch(Exception $e){
+            return response()->json("something went wrong",400);
+        }
         // return to_route('admin.categories.index')->with('success', 'Category Created Successfully!');
     }
 
@@ -66,9 +70,13 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::find($id);
+        try{
+            $category = Category::find($id);
         $menus = $category->menus;
         return response()->json($menus);
+        }catch(Exception $e){
+            return response()->json("something went wrong", 400);
+        }
     }
 
     /**
@@ -91,28 +99,40 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
-        $request->validate([
-            'name' => ['required'],
-            'description' => ['required'],
-            // 'image' => ['image','required']
-        ]);
-        // $newImageName = $category->image;
-        // if ($request->hasFile('image')) {
-        //     Storage::delete(public_path('categories/'.$newImageName));
-        //     $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
-        //     $request->image->move(public_path('categories'), $newImageName);
-        // }
+        try{
+            if ($request->isMethod('put') || $request->isMethod('patch')) {
+                $request->merge(['_method' => 'PUT']);
+            }
+            $category = Category::find($id);
+            if(!$category){
+                return response()->json([
+                    'error' => 'category not found',
+                ],400);
+            }
+            $request->validate([
+                'name' => ['required'],
+                'description' => ['required'],
+                // 'image' => ['image','required']
+            ]);
+            $newImageName = $category->image;
+            if ($request->hasFile('image')) {
+                Storage::delete(public_path('categories/'.$newImageName));
+                $newImageName = uniqid() . '-' . $request->name . '.' . $request->image->extension();
+                $request->image->move(public_path('categories'), $newImageName);
+            }
 
-        $category->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'image' => $request->image,
-            // 'image' => $newImageName,
-        ]);
-        $category->save();
+            $category->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                // 'image' => $request->image,
+                'image' => $newImageName,
+            ]);
+            $category->save();
 
-        return response()->json('updated');
+            return response()->json('updated');
+        }catch(Exception $e){
+            return response()->json("something went wrong",400);
+        }
         // return to_route('admin.categories.index')->with('success', 'Category Updated Successfully!');
     }
 
@@ -124,12 +144,16 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
+        try{
+            $category = Category::find($id);
         // Storage::delete(public_path('images/'.$category->image));
         $category->menus()->detach();
         $category->delete();
 
         return response()->json('deleted');
+        }catch(Exception $e){
+            return response()->json("something went wrong", 400);
+        }
         // return to_route('admin.categories.index')->with('danger', 'Category Deleted Successfully!');
     }
 }
